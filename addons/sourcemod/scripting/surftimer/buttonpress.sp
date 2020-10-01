@@ -471,6 +471,7 @@ public void CL_OnEndTimerPress(int client)
 			g_bStyleMapSRVRecord[style][client] = false;
 
 			g_OldStyleMapRank[style][client] = g_StyleMapRank[style][client];
+			g_fOldRecordStyleMapTime[style] = g_fRecordStyleMapTime[style];
 
 			diff = g_fPersonalStyleRecord[style][client] - g_fFinalTime[client];
 			FormatTimeFloat(client, diff, 3, szDiff, sizeof(szDiff));
@@ -524,6 +525,8 @@ public void CL_OnEndTimerPress(int client)
 
 				// Insert latest record
 				// db_InsertLatestRecords(g_szSteamID[client], szName, g_fFinalTime[client]);
+
+				g_fOldRecordStyleMapTime[style] = g_fRecordStyleMapTime[style];
 			}
 
 
@@ -553,7 +556,7 @@ public void CL_OnEndTimerPress(int client)
 				db_selectStyleRecord(client, style);
 			}
 
-			if (!g_bStyleMapSRVRecord[style][client] && !g_bStyleMapFirstRecord[style][client] && !g_bStyleMapPBRecord[style][client])
+			/*if (!g_bStyleMapSRVRecord[style][client] && !g_bStyleMapFirstRecord[style][client] && !g_bStyleMapPBRecord[style][client])
 			{
 				int count = g_StyleMapTimesCount[style];
 
@@ -564,7 +567,7 @@ public void CL_OnEndTimerPress(int client)
 						CPrintToChat(i, "%t", "BPress6", g_szChatPrefix, szName, g_szStyleRecordPrint[style], g_szFinalTime[client], g_szTimeDifference[client], g_StyleMapRank[style][client], count, g_szRecordStyleMapTime[style]);
 					}
 				}
-			}
+			}*/
 			CS_SetClientAssists(client, 100);
 		}
 	}
