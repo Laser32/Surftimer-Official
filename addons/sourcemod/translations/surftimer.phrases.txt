@@ -188,7 +188,7 @@
 	"MapFinished1"
 	{
 		"#format"	"{1:s},{2:s},{3:s},{4:s},{5:i},{6:i},{7:s}"
-		"en"		"{1} {yellow}{2}{default} set a PB time of {lightgreen}{3}{default} [SR {red}{4}{default} | Rank {lightgreen}{5}/{6}{default} | {7}]"
+		"en"		"{1} {yellow}{2}{default} set a PB of {lightgreen}{3}{default} [SR {red}{4}{default} | Rank {lightgreen}{5}/{6}{default} | {7}]"
 	}
 	"MapFinished2"
 	{
@@ -213,7 +213,7 @@
 	"MapFinished6"
 	{
 		"#format"	"{1:s},{2:s},{3:s},{4:s},{5:i},{6:i}"
-		"en"		"{1} {yellow}{2}{default} set a PB time of {lightgreen}{3}{default} [SR {red}{4}{default} | Rank {lightgreen}{5}/{6}{default}]"
+		"en"		"{1} {yellow}{2}{default} set a PB of {lightgreen}{3}{default} [SR {red}{4}{default} | Rank {lightgreen}{5}/{6}{default}]"
 	}
 	"MapFinished7"
 	{
@@ -243,7 +243,7 @@
 	"BonusFinished3"
 	{
 		"#format"	"{1:s},{2:s},{3:s},{4:s},{5:s},{6:i},{7:i}"
-		"en"		"{1} {yellow}{2}{default} finished {orange}{3}{default} in {lightgreen}{4}{default} [SR {red}{5}{default} | Rank {lightgreen}{6}/{7}{default}]"
+		"en"		"{1} {yellow}{2}{default} set a {orange}{3}{default} PB of {lightgreen}{4}{default} [SR {red}{5}{default} | Rank {lightgreen}{6}/{7}{default}]"
 	}
 	"BonusFinished4"
 	{
