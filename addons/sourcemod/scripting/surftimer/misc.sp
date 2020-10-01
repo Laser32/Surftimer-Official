@@ -1851,7 +1851,7 @@ stock void MapFinishedMsgs(int client, int rankThisRun = 0)
 		else
 			Format(szGroup, 128, "");
 
-		// SR time difference formatting 
+		// Map SR, time difference formatting 
 		RecordDiff = g_fRecordStyleMapTime[0] - g_fFinalTime[client];
 		FormatTimeFloat(client, RecordDiff, 3, szRecordDiff, 32);
 		if (RecordDiff > 0.0)
@@ -1863,7 +1863,7 @@ stock void MapFinishedMsgs(int client, int rankThisRun = 0)
 			Format(szRecordDiff, 32, "-%s", szRecordDiff);
 		}
 		
-		// 1st SR time difference formatting 
+		// Player beat map SR, time difference formatting 
 		RecordDiff2 = g_fOldRecordMapTime - g_fFinalTime[client];
 		FormatTimeFloat(client, RecordDiff2, 3, szRecordDiff2, 32);
 		if (RecordDiff2 > 0.0)
@@ -2048,7 +2048,7 @@ stock void PrintChatBonus (int client, int zGroup, int rank = 0)
 	if (rank == 0)
 		rank = g_StyleMapRankBonus[0][zGroup][client];
 	
-	// Bonus record time difference formatting 
+	// Bonus SR, time difference formatting 
 	RecordDiff = g_fStyleBonusFastest[0][zGroup] - g_fFinalTime[client];
 	FormatTimeFloat(client, RecordDiff, 3, szRecordDiff, 54);
 	if (RecordDiff > 0.0)
@@ -2060,7 +2060,7 @@ stock void PrintChatBonus (int client, int zGroup, int rank = 0)
 		Format(szRecordDiff, 54, "-%s", szRecordDiff);
 	}
 	
-	// 1st bonus record time difference formatting 
+	// Player beat bonus SR, time difference formatting 
 	RecordDiff2 = g_fStyleOldBonusRecordTime[0][zGroup] - g_fFinalTime[client];
 	FormatTimeFloat(client, RecordDiff2, 3, szRecordDiff2, 54);
 	if (RecordDiff2 > 0.0)
@@ -4314,7 +4314,7 @@ stock void StyleFinishedMsgs(int client, int style)
 		GetClientName(client, szName, MAX_NAME_LENGTH);
 		int count = g_StyleMapTimesCount[style];
 
-		// Style SR time difference formatting
+		// Map style SR, time difference formatting
 		RecordDiff = g_fRecordStyleMapTime[style] - g_fFinalTime[client];
 		FormatTimeFloat(client, RecordDiff, 3, szRecordDiff, 32);
 		if (RecordDiff > 0.0)
@@ -4326,7 +4326,7 @@ stock void StyleFinishedMsgs(int client, int style)
 		Format(szRecordDiff, 32, "+%s", szRecordDiff);
 		}
 
-		// Style 1st SR time difference formatting
+		// Player beat map style SR, time difference formatting
 		RecordDiff2 = g_fOldRecordStyleMapTime[style] - g_fFinalTime[client];
 		FormatTimeFloat(client, RecordDiff2, 3, szRecordDiff2, 32);
 		if (RecordDiff2 > 0.0)
@@ -4431,7 +4431,7 @@ stock void StyleFinishedMsgs(int client, int style)
 		}	             
 
 		if (g_StyleMapRank[style][client] == 99999 && IsValidClient(client))
-				CPrintToChat(client, "%t", "FailedSaveData", g_szChatPrefix);
+			CPrintToChat(client, "%t", "FailedSaveData", g_szChatPrefix);
 
 		CalculatePlayerRank(client, style);
 		return;
@@ -4443,68 +4443,75 @@ stock void PrintChatBonusStyle (int client, int zGroup, int style, int rank = 0)
 	if (!IsValidClient(client))
 	return;
 
-	float RecordDiff;
-	char szRecordDiff[54], szName[MAX_NAME_LENGTH];
+	float RecordDiff, RecordDiff2;
+	char szRecordDiff[54], szRecordDiff2[54], szName[MAX_NAME_LENGTH];
 
 	if (rank == 0)
 	rank = g_StyleMapRankBonus[style][zGroup][client];
 
 	GetClientName(client, szName, MAX_NAME_LENGTH);
 
+	// Bonus style SR, time difference formatting
+	RecordDiff = g_fStyleBonusFastest[style][zGroup] - g_fFinalTime[client];
+	FormatTimeFloat(client, RecordDiff, 3, szRecordDiff, 54);
+	if (RecordDiff > 0.0)
+	{
+	Format(szRecordDiff, 54, "-%s", szRecordDiff);
+	}
+	else
+	{
+	Format(szRecordDiff, 54, "+%s", szRecordDiff);
+	}
+
+	// Player beat bonus style SR, time difference formatting
+	RecordDiff2 = g_fStyleOldBonusRecordTime[style][zGroup] - g_fFinalTime[client];
+	FormatTimeFloat(client, RecordDiff2, 3, szRecordDiff2, 54);
+	if (RecordDiff2 > 0.0)
+	{
+	Format(szRecordDiff2, 54, "-%s", szRecordDiff2);
+	}
+	else
+	{
+	Format(szRecordDiff2, 54, "+%s", szRecordDiff2);
+	}
+
 	if (g_bBonusSRVRecord[client] && g_fFinalTime[client] == g_fStyleOldBonusRecordTime[style][zGroup]) // Player sets 1st bonus style record
-			{
-				PlayRecordSound(2);
-				RecordDiff = g_fStyleOldBonusRecordTime[style][zGroup] - g_fFinalTime[client];
-				FormatTimeFloat(client, RecordDiff, 3, szRecordDiff, 54);
-				Format(szRecordDiff, 54, "-%s", szRecordDiff);
+	{
+		PlayRecordSound(2);
 
-				CPrintToChatAll("%t", "StyleFirstBonusRecord", g_szChatPrefix, szName, g_szZoneGroupName[zGroup], g_szStyleRecordPrint[style]);
-				PrintToConsole(client, "Surftimer | %s set the %s %s record!", szName, g_szZoneGroupName[zGroup], g_szStyleRecordPrint[style]);
+		CPrintToChatAll("%t", "StyleFirstBonusRecord", g_szChatPrefix, szName, g_szZoneGroupName[zGroup], g_szStyleRecordPrint[style]);
+		PrintToConsole(client, "Surftimer | %s set the %s %s record!", szName, g_szZoneGroupName[zGroup], g_szStyleRecordPrint[style]);
 
-				CPrintToChatAll("%t", "StyleBonusFinished1", g_szChatPrefix, szName, g_szZoneGroupName[zGroup], g_szStyleRecordPrint[style], g_szFinalTime[client]);
-				PrintToConsole(client, "Surftimer | %s set a %s %s SR of %s", szName, g_szZoneGroupName[zGroup], g_szStyleRecordPrint[style], g_szFinalTime[client]);
-			}
-			else if (g_bBonusSRVRecord[client]) // Player beats bonus style record
-			{
-				PlayRecordSound(2);
-				RecordDiff = g_fStyleOldBonusRecordTime[style][zGroup] - g_fFinalTime[client];
-				FormatTimeFloat(client, RecordDiff, 3, szRecordDiff, 54);
-				Format(szRecordDiff, 54, "-%s", szRecordDiff);
-
-				CPrintToChatAll("%t", "StyleNewBonusRecord", g_szChatPrefix, szName, g_szZoneGroupName[zGroup], g_szStyleRecordPrint[style]);
-				PrintToConsole(client, "Surftimer | %s beat the %s %s record!", szName, g_szZoneGroupName[zGroup], g_szStyleRecordPrint[style]);
-					
-				CPrintToChatAll("%t", "StyleBonusFinished2", g_szChatPrefix, szName, g_szZoneGroupName[zGroup], g_szStyleRecordPrint[style], g_szFinalTime[client], szRecordDiff, g_szBonusTimeDifference[client], g_StyleMapRankBonus[style][zGroup][client], g_iStyleBonusCount[style][zGroup]);
-				PrintToConsole(client, "Surftimer | %s finished %s %s in %s [SR %s | PB %s | Rank #%i/%i]", szName, g_szZoneGroupName[zGroup], g_szStyleRecordPrint[style], g_szFinalTime[client], szRecordDiff, g_szBonusTimeDifference[client], g_StyleMapRankBonus[style][zGroup][client], g_iStyleBonusCount[style][zGroup]);
-			}
-			else if (g_bBonusFirstRecord[client] && !g_bBonusSRVRecord[client]) // Player 1st time finishing bonus using style
-			{
-				RecordDiff = g_fStyleBonusFastest[style][zGroup] - g_fFinalTime[client];
-				FormatTimeFloat(client, RecordDiff, 3, szRecordDiff, 54);
-				Format(szRecordDiff, 54, "+%s", szRecordDiff);
-				
-				CPrintToChat(client, "%t", "StyleBonusFinished3", g_szChatPrefix, szName, g_szZoneGroupName[zGroup], g_szStyleRecordPrint[style], g_szFinalTime[client], szRecordDiff, g_StyleMapRankBonus[style][zGroup][client], g_iStyleBonusCount[style][zGroup]);
-				PrintToConsole(client, "Surftimer | %s set a %s %s PB of %s [SR %s | Rank #%i/%i]", szName, g_szZoneGroupName[zGroup], g_szStyleRecordPrint[style], g_szFinalTime[client], szRecordDiff, g_StyleMapRankBonus[style][zGroup][client], g_iStyleBonusCount[style][zGroup]);
-			}
-			else if (g_bBonusPBRecord[client] && !g_bBonusSRVRecord[client]) // Player beats PB but not bonus record using style
-			{
-				PlayUnstoppableSound(client);
-				RecordDiff = g_fStyleBonusFastest[style][zGroup] - g_fFinalTime[client];
-				FormatTimeFloat(client, RecordDiff, 3, szRecordDiff, 54);
-				Format(szRecordDiff, 54, "+%s", szRecordDiff);
-				
-				CPrintToChat(client, "%t", "StyleBonusFinished4", g_szChatPrefix, szName, g_szZoneGroupName[zGroup], g_szStyleRecordPrint[style], g_szFinalTime[client], szRecordDiff, g_szBonusTimeDifference[client], g_StyleMapRankBonus[style][zGroup][client], g_iStyleBonusCount[style][zGroup]);
-				PrintToConsole(client, "Surftimer | %s finished %s %s in %s [SR %s | PB %s | Rank #%i/%i]", szName, g_szZoneGroupName[zGroup], g_szStyleRecordPrint[style], g_szFinalTime[client], szRecordDiff, g_szBonusTimeDifference[client], g_StyleMapRankBonus[style][zGroup][client], g_iStyleBonusCount[style][zGroup]);
-			}
-			else if (!g_bBonusSRVRecord[client] && !g_bBonusFirstRecord[client] && !g_bBonusPBRecord[client]) // Player did not beat bonus record nor set 1st bonus time nor beat bonus PB using style
-			{
-				RecordDiff = g_fStyleBonusFastest[style][zGroup] - g_fFinalTime[client];
-				FormatTimeFloat(client, RecordDiff, 3, szRecordDiff, 54);
-				Format(szRecordDiff, 54, "+%s", szRecordDiff);
-				
-				CPrintToChat(client, "%t", "StyleBonusFinished5", g_szChatPrefix, szName, g_szZoneGroupName[zGroup], g_szStyleRecordPrint[style], g_szFinalTime[client], szRecordDiff, g_szBonusTimeDifference[client], g_StyleMapRankBonus[style][zGroup][client], g_iStyleBonusCount[style][zGroup]);
-				PrintToConsole(client, "Surftimer | %s finished %s %s in %s [SR %s | PB %s | Rank #%i/%i]", szName, g_szZoneGroupName[zGroup], g_szStyleRecordPrint[style], g_szFinalTime[client], szRecordDiff, g_szBonusTimeDifference[client], g_StyleMapRankBonus[style][zGroup][client], g_iStyleBonusCount[style][zGroup]);
-			}
+		CPrintToChatAll("%t", "StyleBonusFinished1", g_szChatPrefix, szName, g_szZoneGroupName[zGroup], g_szStyleRecordPrint[style], g_szFinalTime[client]);
+		PrintToConsole(client, "Surftimer | %s set a %s %s SR of %s", szName, g_szZoneGroupName[zGroup], g_szStyleRecordPrint[style], g_szFinalTime[client]);
+	}
+	else if (g_bBonusSRVRecord[client]) // Player beats bonus style record
+	{
+		PlayRecordSound(2);
+		
+		CPrintToChatAll("%t", "StyleNewBonusRecord", g_szChatPrefix, szName, g_szZoneGroupName[zGroup], g_szStyleRecordPrint[style]);
+		PrintToConsole(client, "Surftimer | %s beat the %s %s record!", szName, g_szZoneGroupName[zGroup], g_szStyleRecordPrint[style]);
+			
+		CPrintToChatAll("%t", "StyleBonusFinished2", g_szChatPrefix, szName, g_szZoneGroupName[zGroup], g_szStyleRecordPrint[style], g_szFinalTime[client], szRecordDiff2, g_szBonusTimeDifference[client], g_StyleMapRankBonus[style][zGroup][client], g_iStyleBonusCount[style][zGroup]);
+		PrintToConsole(client, "Surftimer | %s finished %s %s in %s [SR %s | PB %s | Rank #%i/%i]", szName, g_szZoneGroupName[zGroup], g_szStyleRecordPrint[style], g_szFinalTime[client], szRecordDiff2, g_szBonusTimeDifference[client], g_StyleMapRankBonus[style][zGroup][client], g_iStyleBonusCount[style][zGroup]);
+	}
+	else if (g_bBonusFirstRecord[client] && !g_bBonusSRVRecord[client]) // Player 1st time finishing bonus using style
+	{
+		CPrintToChat(client, "%t", "StyleBonusFinished3", g_szChatPrefix, szName, g_szZoneGroupName[zGroup], g_szStyleRecordPrint[style], g_szFinalTime[client], szRecordDiff, g_StyleMapRankBonus[style][zGroup][client], g_iStyleBonusCount[style][zGroup]);
+		PrintToConsole(client, "Surftimer | %s set a %s %s PB of %s [SR %s | Rank #%i/%i]", szName, g_szZoneGroupName[zGroup], g_szStyleRecordPrint[style], g_szFinalTime[client], szRecordDiff, g_StyleMapRankBonus[style][zGroup][client], g_iStyleBonusCount[style][zGroup]);
+	}
+	else if (g_bBonusPBRecord[client] && !g_bBonusSRVRecord[client]) // Player beats PB but not bonus record using style
+	{
+		PlayUnstoppableSound(client);
+		
+		CPrintToChat(client, "%t", "StyleBonusFinished4", g_szChatPrefix, szName, g_szZoneGroupName[zGroup], g_szStyleRecordPrint[style], g_szFinalTime[client], szRecordDiff, g_szBonusTimeDifference[client], g_StyleMapRankBonus[style][zGroup][client], g_iStyleBonusCount[style][zGroup]);
+		PrintToConsole(client, "Surftimer | %s finished %s %s in %s [SR %s | PB %s | Rank #%i/%i]", szName, g_szZoneGroupName[zGroup], g_szStyleRecordPrint[style], g_szFinalTime[client], szRecordDiff, g_szBonusTimeDifference[client], g_StyleMapRankBonus[style][zGroup][client], g_iStyleBonusCount[style][zGroup]);
+	}
+	else if (!g_bBonusSRVRecord[client] && !g_bBonusFirstRecord[client] && !g_bBonusPBRecord[client]) // Player did not beat bonus record nor set 1st bonus time nor beat bonus PB using style
+	{
+		CPrintToChat(client, "%t", "StyleBonusFinished5", g_szChatPrefix, szName, g_szZoneGroupName[zGroup], g_szStyleRecordPrint[style], g_szFinalTime[client], szRecordDiff, g_szBonusTimeDifference[client], g_StyleMapRankBonus[style][zGroup][client], g_iStyleBonusCount[style][zGroup]);
+		PrintToConsole(client, "Surftimer | %s finished %s %s in %s [SR %s | PB %s | Rank #%i/%i]", szName, g_szZoneGroupName[zGroup], g_szStyleRecordPrint[style], g_szFinalTime[client], szRecordDiff, g_szBonusTimeDifference[client], g_StyleMapRankBonus[style][zGroup][client], g_iStyleBonusCount[style][zGroup]);
+	}
 
 	CheckBonusStyleRanks(client, zGroup, style);
 
