@@ -203,7 +203,7 @@
 	"MapFinished4"
 	{
 		"#format"	"{1:s},{2:s},{3:s}"
-		"en"		"{1} {yellow}{2}{default} set a SR time of {lightgreen}{3}{default}"
+		"en"		"{1} {yellow}{2}{default} set a SR of {lightgreen}{3}{default}"
 	}
 	"MapFinished5"
 	{
@@ -1306,7 +1306,7 @@
 	"StyleMapFinished3"
 	{
 		"#format"	"{1:s},{2:s},{3:s},{4:s},{5:s},{6:i},{7:i}"
-		"en"		"{1} {yellow}{2}{default} set a {red}{3} {default}PB time of {lightgreen}{4}{default} [SR {red}{5} {default}| Rank {lightgreen}{6}/{7}{default}]"
+		"en"		"{1} {yellow}{2}{default} set a {red}{3} {default}PB of {lightgreen}{4}{default} [SR {red}{5} {default}| Rank {lightgreen}{6}/{7}{default}]"
 	}
 	"StyleMapFinished4"
 	{
